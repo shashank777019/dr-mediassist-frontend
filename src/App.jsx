@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from "react";
 import Auth from "./Auth";
 
 const API = "https://dr-mediassist-backend.onrender.com/api";
-const GEMINI_API_KEY = ["AIzaSyCE5rKfcdOLqKT0PJAnWivu__UO_K9p5ik","AIzaSyDxHv31jz4g_ni480ZTQnHw6bC7dDuANbg","AIzaSyBQ8cwZ41jIBFIr181qGjNeHd8iialc6D4","AIzaSyD0iaMYkq32hVVU1Uww4CST_I-Pg--5kIU","AIzaSyDy0yjOh5bWqh1ffQzBcIrWGGb-VYnFXzg","AIzaSyAQkJ9tiuQvm0482LQfgHYuT-Rx_TxX7cc","AIzaSyCIoiheeTwq0sf2F7UHj_PSv-leVYVzv4I","AIzaSyBQO7HVPJrLGvEZM2ooQlftPXU8HUJn0mo"][Math.floor(Date.now()/60000) % 8];
 
 const CONDITIONS_LIST = [
   { id: "diabetes_t1", label: "Diabetes (Type 1)" },
@@ -461,13 +460,20 @@ export default function AIDoctorApp() {
       }
 
       const geminiHistory = newMsgs.slice(0, -1).map(m => ({ role: m.role === "assistant" ? "model" : "user", parts: [{ text: m.content }] }));
-      const res = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`,
-        { method: "POST", headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ system_instruction: { parts: [{ text: buildSystemPrompt(patient) }] }, contents: [...geminiHistory, { role: "user", parts: [{ text: userText }] }], generationConfig: { maxOutputTokens: 2048, temperature: 0.7 } }) }
-      );
-      const data = await res.json();
-      const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "I'm sorry, I couldn't generate a response. Please try again.";
+      const _keys=["AIzaSyCE5rKfcdOLqKT0PJAnWivu__UO_K9p5ik","AIzaSyDxHv31jz4g_ni480ZTQnHw6bC7dDuANbg","AIzaSyBQ8cwZ41jIBFIr181qGjNeHd8iialc6D4","AIzaSyD0iaMYkq32hVVU1Uww4CST_I-Pg--5kIU","AIzaSyDy0yjOh5bWqh1ffQzBcIrWGGb-VYnFXzg","AIzaSyAQkJ9tiuQvm0482LQfgHYuT-Rx_TxX7cc","AIzaSyCIoiheeTwq0sf2F7UHj_PSv-leVYVzv4I","AIzaSyBQO7HVPJrLGvEZM2ooQlftPXU8HUJn0mo"];
+      let reply = "I'm sorry, I couldn't generate a response. Please try again.";
+      for (let i = 0; i < _keys.length; i++) {
+        try {
+          const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${_keys[i]}`,
+            { method: "POST", headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ system_instruction: { parts: [{ text: buildSystemPrompt(patient) }] }, contents: [...geminiHistory, { role: "user", parts: [{ text: userText }] }], generationConfig: { maxOutputTokens: 2048, temperature: 0.7 } }) }
+          );
+          if (res.status === 403 || res.status === 429) continue;
+          const data = await res.json();
+          const t = data.candidates?.[0]?.content?.parts?.[0]?.text;
+          if (t) { reply = t; break; }
+        } catch(e) { continue; }
+      }
       const finalMsgs = [...newMsgs, { role: "assistant", content: reply }];
       setMessages(finalMsgs);
       saveChat(finalMsgs);
