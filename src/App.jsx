@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import Auth from "./Auth";
 
 const API = "https://dr-mediassist-backend.onrender.com/api";
-const GEMINI_API_KEY = "AIzaSyBQO7HVPJrLGvEZM2ooQlftPXU8HUJn0mo";
+const GEMINI_API_KEY = "AIzaSyC8jMGrckpMXsJdGYHvxG4jwpgHo3ohelU";
 
 const CONDITIONS_LIST = [
   { id: "diabetes_t1", label: "Diabetes (Type 1)" },
