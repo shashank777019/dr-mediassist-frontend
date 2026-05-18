@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import Auth from "./Auth";
 
 const API = "https://dr-mediassist-backend.onrender.com/api";
-const GEMINI_API_KEY = "AIzaSyCE5rKfcdOLqKT0PJAnWivu__UO_K9p5ik";
+const GEMINI_API_KEY = ["AIzaSyCE5rKfcdOLqKT0PJAnWivu__UO_K9p5ik","AIzaSyDxHv31jz4g_ni480ZTQnHw6bC7dDuANbg","AIzaSyBQ8cwZ41jIBFIr181qGjNeHd8iialc6D4","AIzaSyD0iaMYkq32hVVU1Uww4CST_I-Pg--5kIU","AIzaSyDy0yjOh5bWqh1ffQzBcIrWGGb-VYnFXzg","AIzaSyAQkJ9tiuQvm0482LQfgHYuT-Rx_TxX7cc","AIzaSyCIoiheeTwq0sf2F7UHj_PSv-leVYVzv4I","AIzaSyBQO7HVPJrLGvEZM2ooQlftPXU8HUJn0mo"][Math.floor(Date.now()/60000) % 8];
 
 const CONDITIONS_LIST = [
   { id: "diabetes_t1", label: "Diabetes (Type 1)" },
