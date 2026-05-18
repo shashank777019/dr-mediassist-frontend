@@ -7,7 +7,7 @@ const T = {
   border: "#E2E8F0", red: "#DC2626", redL: "#FEF2F2",
 };
 
-const API = "http://localhost:5000/api";
+const API = "https://dr-mediassist-backend.onrender.com/api";
 
 export default function Auth({ onLogin }) {
   const [mode, setMode] = useState("login"); // "login" or "signup"
