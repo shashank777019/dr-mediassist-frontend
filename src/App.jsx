@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import Auth from "./Auth";
 
 const API = "http://localhost:5000/api";
-const GEMINI_API_KEY = "AIzaSyD6GsTllPObrjzLYvCDKmfFSGX8Z3N9uaQ";
+const GEMINI_API_KEY = "AIzaSyDZRnMEvUrM9jsLBV7rEcpZGDb-EzIeCio";
 
 const CONDITIONS_LIST = [
   { id: "diabetes_t1", label: "Diabetes (Type 1)" },
