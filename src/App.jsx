@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import Auth from "./Auth";
 
-const API = "http://localhost:5000/api";
+const API = "https://dr-mediassist-backend.onrender.com/api";
 const GEMINI_API_KEY = "AIzaSyDZRnMEvUrM9jsLBV7rEcpZGDb-EzIeCio";
 
 const CONDITIONS_LIST = [
